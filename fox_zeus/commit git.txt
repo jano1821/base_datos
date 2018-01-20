@@ -1,0 +1,38 @@
+Microsoft Windows [Versión 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation. Reservados todos los derechos.
+
+C:\Users\acnunez>cd C:\alejandro\otros\base_datos
+
+C:\alejandro\otros\base_datos>git init
+Initialized empty Git repository in C:/alejandro/otros/base_datos/.git/
+
+C:\alejandro\otros\base_datos>git add
+Nothing specified, nothing added.
+Maybe you wanted to say 'git add .'?
+
+C:\alejandro\otros\base_datos>git add .
+
+C:\alejandro\otros\base_datos>git commit -m "acnunez - fox_zeus 19.01.2018"
+[master (root-commit) 2596fb4] acnunez - fox_zeus 19.01.2018
+ 4 files changed, 925 insertions(+)
+ create mode 100644 fox_zeus/01-insert departamentos.sql
+ create mode 100644 fox_zeus/fox_zeus.erwin
+ create mode 100644 fox_zeus/fox_zeus.sql
+ create mode 100644 fox_zeus/selects fox_zeus.sql
+
+C:\alejandro\otros\base_datos>git remote add origin https://github.com/jano1821/
+base_datos.git
+
+C:\alejandro\otros\base_datos>git push -u origin master
+Username for 'https://github.com': jano1821
+Password for 'https://jano1821@github.com':
+Counting objects: 7, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (7/7), 88.53 KiB | 0 bytes/s, done.
+Total 7 (delta 0), reused 0 (delta 0)
+To https://github.com/jano1821/base_datos.git
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.
+
+C:\alejandro\otros\base_datos>
