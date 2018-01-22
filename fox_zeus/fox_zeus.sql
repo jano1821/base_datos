@@ -84,7 +84,7 @@ CREATE TABLE comprobante
     PRIMARY KEY (codComprobante)
 );
 
-CREATE TABLE correlativoComprobante
+CREATE TABLE correlativo_comprobante
 (
 	codVenta             INTEGER NOT NULL,
     numeroCorrelativo    VARCHAR(30) NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE departamento
     PRIMARY KEY (codDepartamento)
 );
 
-CREATE TABLE detalleCompra
+CREATE TABLE detalle_compra
 (
 	correlativoDetalle   INTEGER NOT NULL AUTO_INCREMENT,
 	monto                DECIMAL(13,3) NOT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE detalleCompra
     PRIMARY KEY (correlativoDetalle)
 );
 
-CREATE TABLE detalleVenta
+CREATE TABLE detalle_venta
 (
 	correlativoDetalle   INTEGER NOT NULL AUTO_INCREMENT,
 	monto                DECIMAL(13,3) NOT NULL,
@@ -529,10 +529,10 @@ CREATE TABLE tipo_pago
     PRIMARY KEY (codTipoPago)
 );
 
-CREATE TABLE tipoEmpleado
+CREATE TABLE tipo_empleado
 (
 	codTipoEmpleado      INTEGER NOT NULL AUTO_INCREMENT,
-	decripcion           VARCHAR(100) NOT NULL,
+	descripcion           VARCHAR(100) NOT NULL,
 	estadoRegistro       VARCHAR(1) NOT NULL,
 	usuarioInsercion     VARCHAR(30) NOT NULL,
 	fechaInsercion       DATETIME NOT NULL,
