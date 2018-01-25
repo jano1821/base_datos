@@ -253,6 +253,55 @@ CREATE TABLE marca
     PRIMARY KEY (codMarca)
 );
 
+CREATE TABLE menu
+(
+	codMenu              INTEGER NOT NULL AUTO_INCREMENT,
+	descripcion          VARCHAR(100) NOT NULL,
+	id                   VARCHAR(100) NOT NULL,
+	icono                VARCHAR(250) NULL,
+	idBoton              VARCHAR(100) NULL,
+	nombreBoton          VARCHAR(100) NULL,
+    tipoMenu             VARCHAR(1) NOT NULL,
+	orden                INTEGER NOT NULL,
+	estadoRegistro       VARCHAR(1) NOT NULL,
+	usuarioInsercion     VARCHAR(30) NOT NULL,
+	fechaInsercion       DATETIME NOT NULL,
+	usuarioModificacion  VARCHAR(30) NULL,
+	fechaModificacion    DATETIME NULL,
+    PRIMARY KEY (codMenu)
+);
+
+CREATE TABLE menu_sistema
+(
+	codMenu              INTEGER NOT NULL,
+	codSistema           INTEGER NOT NULL,
+	codUsuario           INTEGER NOT NULL,
+	estadoRegistro       VARCHAR(1) NOT NULL,
+	usuarioInsercion     VARCHAR(30) NOT NULL,
+	fechaInsercion       DATETIME NOT NULL,
+	usuarioModificacion  VARCHAR(30) NULL,
+	fechaModificacion    DATETIME NULL
+);
+
+ALTER TABLE menu_sistema
+ADD PRIMARY KEY (codMenu,codSistema,codUsuario);
+
+
+
+CREATE TABLE menu_usuario
+(
+	codMenu              INTEGER NOT NULL,
+	codUsuario           INTEGER NOT NULL,
+	estadoRegistro       VARCHAR(1) NOT NULL,
+	usuarioInsercion     VARCHAR(30) NOT NULL,
+	fechaInsercion       DATETIME NOT NULL,
+	usuarioModificacion  VARCHAR(30) NULL,
+	fechaModificacion    DATETIME NULL
+);
+
+ALTER TABLE menu_usuario
+ADD PRIMARY KEY (codMenu,codUsuario);
+
 CREATE TABLE modelo
 (
 	codModelo            INTEGER NOT NULL AUTO_INCREMENT,
@@ -585,16 +634,6 @@ CREATE TABLE usuario
     PRIMARY KEY (codUsuario)
 );
 
-CREATE TABLE usuario_sistema
-(
-	codUsuario           INTEGER NOT NULL,
-	codSistema           INTEGER NOT NULL,
-	estadoRegistro       VARCHAR(1) NOT NULL
-);
-
-ALTER TABLE usuario_sistema
-ADD PRIMARY KEY (codUsuario,codSistema);
-
 CREATE TABLE venta
 (
 	codVenta             INTEGER NOT NULL AUTO_INCREMENT,
@@ -745,6 +784,29 @@ ALTER TABLE logistica
 ADD FOREIGN KEY R_53 (codAlmacen) REFERENCES almacen (codAlmacen);
 
 
+ALTER TABLE menu_sistema
+ADD FOREIGN KEY R_79 (codMenu) REFERENCES menu (codMenu);
+
+
+
+ALTER TABLE menu_sistema
+ADD FOREIGN KEY R_81 (codSistema) REFERENCES sistema (codSistema);
+
+
+
+ALTER TABLE menu_sistema
+ADD FOREIGN KEY R_82 (codUsuario) REFERENCES usuario (codUsuario);
+
+
+
+ALTER TABLE menu_usuario
+ADD FOREIGN KEY R_72 (codMenu) REFERENCES menu (codMenu);
+
+
+
+ALTER TABLE menu_usuario
+ADD FOREIGN KEY R_74 (codUsuario) REFERENCES usuario (codUsuario);
+
 
 ALTER TABLE permisos
 ADD FOREIGN KEY R_64 (codPersona) REFERENCES empleado (codPersona);
@@ -863,16 +925,6 @@ ADD FOREIGN KEY R_57 (codProducto) REFERENCES producto (codProducto);
 
 ALTER TABLE usuario
 ADD FOREIGN KEY R_17 (codPersona) REFERENCES empleado (codPersona);
-
-
-
-ALTER TABLE usuario_sistema
-ADD FOREIGN KEY R_4 (codUsuario) REFERENCES usuario (codUsuario);
-
-
-
-ALTER TABLE usuario_sistema
-ADD FOREIGN KEY R_6 (codSistema) REFERENCES sistema (codSistema);
 
 
 
