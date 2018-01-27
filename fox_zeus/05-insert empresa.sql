@@ -7,4 +7,4 @@ INSERT INTO empresa(nombreEmpresa,
                     estadoRegistro, 
                     usuarioInsercion, 
                     fechaInsercion) 
-VALUES ('incloudt','INCLOUDT S.A.',3,'Z','S','acnunez',curdate());
+VALUES ('incloudt','INCLOUDT S.A.',3,'1ncl0udt','S','acnunez',curdate());
