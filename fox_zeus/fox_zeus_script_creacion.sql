@@ -86,12 +86,19 @@ CREATE TABLE comprobante
 
 CREATE TABLE correlativo_comprobante
 (
-	codVenta             INTEGER NOT NULL,
-    numeroCorrelativo    VARCHAR(30) NOT NULL,
+	numeroCorrelativo    VARCHAR(30) NOT NULL,
 	codEmpresa           INTEGER NOT NULL,
 	codComprobante       INTEGER NOT NULL,
 	codAgencia           INTEGER NOT NULL,
-    PRIMARY KEY (codVenta)
+	codCorrelativo       INTEGER NOT NULL,
+	serie                VARCHAR(20) NULL,
+	codVenta             INTEGER NULL,
+	estadoRegistro       VARCHAR(1) NULL,
+	usuarioInsercion     VARCHAR(30) NULL,
+	fechaInsercion       DATETIME NULL,
+	usuarioModificacion  VARCHAR(30) NULL,
+	fechaModificacion    DATETIME NULL,
+    PRIMARY KEY (codCorrelativo)
 );
 
 CREATE TABLE departamento
@@ -144,10 +151,29 @@ CREATE TABLE distrito
 CREATE TABLE empleado
 (
 	codPersona           INTEGER NOT NULL,
-	codTipoEmpleado      INTEGER NOT NULL,
 	codEmpresa           INTEGER NOT NULL,
-	codAgencia           INTEGER NOT NULL,
     PRIMARY KEY (codPersona)
+);
+
+CREATE TABLE privilegios
+(
+	codPersona           INTEGER NOT NULL,
+    codCargo             INTEGER NULL,
+	codAgencia           INTEGER NULL,
+    PRIMARY KEY (codPersona)
+);
+
+CREATE TABLE cargo_empleado
+(
+	codCargo             INTEGER NOT NULL AUTO_INCREMENT,
+	decripcion           VARCHAR(100) NOT NULL,
+	estadoRegistro       VARCHAR(1) NOT NULL,
+	usuarioInsercion     VARCHAR(30) NOT NULL,
+	fechaInsercion       DATETIME NOT NULL,
+	usuarioModificacion  VARCHAR(30) NULL,
+	fechaModificacion    DATETIME NULL,
+	codEmpresa           INTEGER NOT NULL,
+    PRIMARY KEY (codCargo)
 );
 
 CREATE TABLE empresa
@@ -579,19 +605,6 @@ CREATE TABLE tipo_pago
     PRIMARY KEY (codTipoPago)
 );
 
-CREATE TABLE tipo_empleado
-(
-	codTipoEmpleado      INTEGER NOT NULL AUTO_INCREMENT,
-	descripcion           VARCHAR(100) NOT NULL,
-	estadoRegistro       VARCHAR(1) NOT NULL,
-	usuarioInsercion     VARCHAR(30) NOT NULL,
-	fechaInsercion       DATETIME NOT NULL,
-	usuarioModificacion  VARCHAR(30) NULL,
-	fechaModificacion    DATETIME NULL,
-	codEmpresa           INTEGER NOT NULL,
-    PRIMARY KEY (codTipoEmpleado)
-);
-
 CREATE TABLE ubicacion
 (
 	codUbicacion         INTEGER NOT NULL AUTO_INCREMENT,
@@ -644,9 +657,6 @@ CREATE TABLE venta
 	fechaProceso         DATETIME NOT NULL,
 	codTipoPago          INTEGER NOT NULL,
 	codPersona           INTEGER NOT NULL,
-	codComprobante       INTEGER NOT NULL,
-	numeroComprobante    VARCHAR(30) NOT NULL,
-	numeroSerie          VARCHAR(30) NULL,
 	estadoRegistro       VARCHAR(1) NOT NULL,
 	usuarioInsercion     VARCHAR(30) NOT NULL,
 	fechaInsercion       DATETIME NOT NULL,
@@ -670,6 +680,9 @@ CREATE TABLE zona
 	codAgencia           INTEGER NOT NULL,
     PRIMARY KEY (codZona)
 );
+
+
+
 
 ALTER TABLE agencia
 ADD FOREIGN KEY R_58 (codEmpresa) REFERENCES empresa (codEmpresa);
@@ -723,11 +736,6 @@ ADD FOREIGN KEY R_8 (codProvincia) REFERENCES provincia (codProvincia);
 
 ALTER TABLE empleado
 ADD FOREIGN KEY R_16 (codPersona) REFERENCES persona (codPersona);
-
-
-
-ALTER TABLE empleado
-ADD FOREIGN KEY R_18 (codTipoEmpleado) REFERENCES tipo_empleado (codTipoEmpleado);
 
 
 
@@ -946,3 +954,15 @@ ADD FOREIGN KEY R_21 (codPersona) REFERENCES empleado (codPersona);
 
 ALTER TABLE venta
 ADD FOREIGN KEY R_22 (codComprobante) REFERENCES comprobante (codComprobante);
+
+
+ALTER TABLE privilegios
+ADD FOREIGN KEY R_84 (codCargo) REFERENCES cargo_empleado (codCargo);
+
+
+
+ALTER TABLE privilegios
+ADD FOREIGN KEY R_86 (codPersona) REFERENCES empleado (codPersona);
+
+
+
