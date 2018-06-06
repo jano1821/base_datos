@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-01-2018 a las 01:30:05
+-- Tiempo de generación: 06-06-2018 a las 02:14:03
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.23
 
@@ -42,7 +42,10 @@ CREATE TABLE `agencia` (
 --
 
 INSERT INTO `agencia` (`codAgencia`, `descripcion`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`, `codEmpresa`) VALUES
-(1, 'Principal', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL, 1);
+(1, 'Oficina Principal', 'S', 'acnunez', '2018-05-06 00:00:00', 'acnunez', '2018-05-12 00:00:00', 1),
+(2, 'Oficina Cono Sur', 'S', 'acnunez', '2018-05-12 00:00:00', 'acnunez', '2018-05-12 00:00:00', 1),
+(3, 'Agencia 1', 'S', 'acnunez', '2018-05-31 00:00:00', NULL, NULL, 2),
+(4, 'Miraflores', 'S', 'acnunez', '2018-06-02 00:00:00', NULL, NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -60,6 +63,23 @@ CREATE TABLE `almacen` (
   `fechaModificacion` datetime DEFAULT NULL,
   `codEmpresa` int(11) NOT NULL,
   `codAgencia` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cargo_empleado`
+--
+
+CREATE TABLE `cargo_empleado` (
+  `codCargo` int(11) NOT NULL,
+  `decripcion` varchar(100) NOT NULL,
+  `estadoRegistro` varchar(1) NOT NULL,
+  `usuarioInsercion` varchar(30) NOT NULL,
+  `fechaInsercion` datetime NOT NULL,
+  `usuarioModificacion` varchar(30) DEFAULT NULL,
+  `fechaModificacion` datetime DEFAULT NULL,
+  `codEmpresa` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -89,8 +109,21 @@ CREATE TABLE `categoria` (
 
 CREATE TABLE `cliente` (
   `codPersona` int(11) NOT NULL,
-  `codEmpresa` int(11) NOT NULL
+  `codEmpresa` int(11) NOT NULL,
+  `estadoRegistro` varchar(1) NOT NULL,
+  `fechaInsercion` datetime NOT NULL,
+  `usuarioInsercion` varchar(30) NOT NULL,
+  `fechaModificacion` datetime DEFAULT NULL,
+  `usuarioModificacion` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+INSERT INTO `cliente` (`codPersona`, `codEmpresa`, `estadoRegistro`, `fechaInsercion`, `usuarioInsercion`, `fechaModificacion`, `usuarioModificacion`) VALUES
+(2, 1, 'S', '2018-05-24 00:00:00', 'acnunez', NULL, NULL),
+(3, 1, 'S', '2018-05-24 00:00:00', 'acnunez', '0000-00-00 00:00:00', '2018-05-24');
 
 -- --------------------------------------------------------
 
@@ -109,6 +142,7 @@ CREATE TABLE `compra` (
   `codComprobante` int(11) NOT NULL,
   `codEmpresa` int(11) NOT NULL,
   `codAgencia` int(11) NOT NULL,
+  `codProveedor` int(11) NOT NULL,
   `estadoRegistro` varchar(1) DEFAULT NULL,
   `usuarioInsercion` varchar(30) NOT NULL,
   `fechaInsercion` datetime NOT NULL,
@@ -142,11 +176,18 @@ CREATE TABLE `comprobante` (
 --
 
 CREATE TABLE `correlativo_comprobante` (
-  `codVenta` int(11) NOT NULL,
   `numeroCorrelativo` varchar(30) NOT NULL,
   `codEmpresa` int(11) NOT NULL,
   `codComprobante` int(11) NOT NULL,
-  `codAgencia` int(11) NOT NULL
+  `codAgencia` int(11) NOT NULL,
+  `codCorrelativo` int(11) NOT NULL,
+  `serie` varchar(20) DEFAULT NULL,
+  `codVenta` int(11) DEFAULT NULL,
+  `estadoRegistro` varchar(1) DEFAULT NULL,
+  `usuarioInsercion` varchar(30) DEFAULT NULL,
+  `fechaInsercion` datetime DEFAULT NULL,
+  `usuarioModificacion` varchar(30) DEFAULT NULL,
+  `fechaModificacion` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -2092,17 +2133,27 @@ INSERT INTO `distrito` (`codDistrito`, `nombreDistrito`, `codProvincia`) VALUES
 
 CREATE TABLE `empleado` (
   `codPersona` int(11) NOT NULL,
-  `codTipoEmpleado` int(11) NOT NULL,
   `codEmpresa` int(11) NOT NULL,
-  `codAgencia` int(11) NOT NULL
+  `estadoRegistro` varchar(1) NOT NULL,
+  `fechaInsercion` datetime NOT NULL,
+  `usuarioInsercion` varchar(30) NOT NULL,
+  `fechaModificacion` datetime DEFAULT NULL,
+  `usuarioModificacion` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `empleado`
 --
 
-INSERT INTO `empleado` (`codPersona`, `codTipoEmpleado`, `codEmpresa`, `codAgencia`) VALUES
-(1, 1, 1, 1);
+INSERT INTO `empleado` (`codPersona`, `codEmpresa`, `estadoRegistro`, `fechaInsercion`, `usuarioInsercion`, `fechaModificacion`, `usuarioModificacion`) VALUES
+(1, 1, 'S', '2018-05-12 00:00:00', 'acnunez', '0000-00-00 00:00:00', ''),
+(2, 1, 'S', '2018-05-21 00:00:00', 'acnunez', '0000-00-00 00:00:00', '2018-05-24'),
+(3, 1, 'S', '2018-05-24 00:00:00', 'acnunez', '0000-00-00 00:00:00', '2018-05-24'),
+(4, 2, 'S', '2018-05-31 00:00:00', 'acnunez', NULL, NULL),
+(5, 2, 'S', '2018-06-01 00:00:00', 'rquispe', NULL, NULL),
+(6, 1, 'S', '2018-06-01 00:00:00', 'acnunez', NULL, NULL),
+(7, 1, 'S', '2018-06-01 00:00:00', 'acnunez', NULL, NULL),
+(8, 3, 'S', '2018-06-02 00:00:00', 'acnunez', '0000-00-00 00:00:00', '2018-06-02');
 
 -- --------------------------------------------------------
 
@@ -2128,7 +2179,9 @@ CREATE TABLE `empresa` (
 --
 
 INSERT INTO `empresa` (`codEmpresa`, `nombreEmpresa`, `razonSocial`, `limiteUsuarios`, `identificadorEmpresa`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`) VALUES
-(1, 'incloudt', 'INCLOUDT S.A.', 3, '1ncl0udt', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL);
+(1, 'incloudt', 'INCLOUDT S.A.', 5, '1ncl0udt', 'S', 'acnunez', '2018-05-06 00:00:00', 'acnunez', NULL),
+(2, 'multisistemas', 'Multisistemas S.A.C.', 2, 'mu7t1s1st3m@s', 'S', 'acnunez', '2018-05-31 00:00:00', NULL, NULL),
+(3, 'TAM Consultores', 'TAM Consultores SAC', 5, 't@m', 'S', 'acnunez', '2018-06-02 00:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2141,6 +2194,28 @@ CREATE TABLE `empresa_sistema` (
   `codSistema` int(11) NOT NULL,
   `estadoRegistro` varchar(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `empresa_sistema`
+--
+
+INSERT INTO `empresa_sistema` (`codEmpresa`, `codSistema`, `estadoRegistro`) VALUES
+(1, 1, 'S'),
+(1, 2, 'S'),
+(1, 3, 'S'),
+(1, 4, 'S'),
+(1, 5, 'S'),
+(1, 6, 'S'),
+(1, 7, 'S'),
+(1, 9, 'S'),
+(2, 3, 'S'),
+(2, 4, 'S'),
+(2, 5, 'S'),
+(2, 6, 'S'),
+(3, 3, 'S'),
+(3, 4, 'S'),
+(3, 6, 'S'),
+(3, 8, 'S');
 
 -- --------------------------------------------------------
 
@@ -2263,8 +2338,8 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`codMenu`, `descripcion`, `id`, `icono`, `idBoton`, `nombreBoton`, `tipoMenu`, `orden`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`) VALUES
-(1, 'Configuracion', 'menu1', '', 'menutoggle1', 'Configuracion', 'P', 1, 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(2, 'Sistemas', 'menu2', '', 'menutoggle2', 'Sistemas', 'P', 2, 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL);
+(1, 'Configuracion', 'menu1', '', 'menutoggle1', 'Configuracion', 'S', 1, 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(2, 'Sistemas', 'menu2', '', 'menutoggle2', 'Sistemas', 'N', 2, 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2288,10 +2363,23 @@ CREATE TABLE `menu_sistema` (
 --
 
 INSERT INTO `menu_sistema` (`codMenu`, `codSistema`, `codUsuario`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`) VALUES
-(1, 1, 1, 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(1, 2, 1, 'S', 'acnunez', '2018-01-27 00:00:00', NULL, NULL),
-(1, 3, 1, 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(1, 4, 1, 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL);
+(1, 1, 1, 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(1, 1, 2, 'S', 'acnunez', '2018-06-01 00:00:00', NULL, NULL),
+(1, 2, 1, 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(1, 2, 2, 'S', 'acnunez', '2018-06-01 00:00:00', NULL, NULL),
+(1, 3, 1, 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(1, 3, 2, 'S', 'acnunez', '2018-06-01 00:00:00', NULL, NULL),
+(1, 3, 5, 'S', 'acnunez', '2018-06-01 00:00:00', NULL, NULL),
+(1, 4, 1, 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(1, 4, 2, 'S', 'acnunez', '2018-05-26 00:00:00', NULL, NULL),
+(1, 4, 5, 'S', 'acnunez', '2018-06-01 00:00:00', NULL, NULL),
+(1, 5, 5, 'S', 'acnunez', '2018-06-01 00:00:00', NULL, NULL),
+(1, 6, 1, 'S', 'acnunez', '2018-05-12 00:00:00', NULL, NULL),
+(1, 6, 2, 'S', 'acnunez', '2018-05-26 00:00:00', NULL, NULL),
+(1, 6, 5, 'S', 'acnunez', '2018-06-01 00:00:00', NULL, NULL),
+(1, 7, 1, 'S', 'acnunez', '2018-05-12 00:00:00', NULL, NULL),
+(2, 5, 1, 'S', 'acnunez', '2018-05-12 00:00:00', NULL, NULL),
+(2, 9, 1, 'S', 'acnunez', '2018-06-04 00:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2314,7 +2402,10 @@ CREATE TABLE `menu_usuario` (
 --
 
 INSERT INTO `menu_usuario` (`codMenu`, `codUsuario`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`) VALUES
-(1, 1, 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL);
+(1, 1, 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(1, 2, 'S', 'acnunez', '2018-06-01 00:00:00', NULL, NULL),
+(1, 5, 'S', 'acnunez', '2018-05-31 00:00:00', NULL, NULL),
+(2, 1, 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2356,19 +2447,19 @@ CREATE TABLE `operador` (
 --
 
 INSERT INTO `operador` (`codOperador`, `descripcion`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`) VALUES
-(1, 'Americatel Perú S.A.', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(2, 'Bitel', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(3, 'Claro', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(4, 'Convergia Perú S.A.', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(5, 'Entel Perú', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(6, 'Gilat to Home', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(7, 'IDT Perú', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(8, 'Impsat Perú (Level 3)', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(9, 'Infoductos y Telecomunicaciones del Perú S.A.', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(10, 'Optical Technologies S.A.C.', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(11, 'Rural Telecom', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(12, 'Telefónica Móviles S.A.', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(13, 'Telefónica del Perú S.A.A.', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL);
+(1, 'Americatel Perú S.A.', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(2, 'Bitel', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(3, 'Claro', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(4, 'Convergia Perú S.A.', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(5, 'Entel Perú', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(6, 'Gilat to Home', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(7, 'IDT Perú', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(8, 'Impsat Perú (Level 3)', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(9, 'Infoductos y Telecomunicaciones del Perú S.A.', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(10, 'Optical Technologies S.A.C.', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(11, 'Rural Telecom', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(12, 'Telefónica Móviles S.A.', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(13, 'Telefónica del Perú S.A.A.', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2394,8 +2485,17 @@ CREATE TABLE `parametros_generales` (
 --
 
 INSERT INTO `parametros_generales` (`codParametro`, `identificadorParametro`, `valorParametro`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`, `indicadorFijo`, `codEmpresa`) VALUES
-(1, 'TIME_OUT_SESSION', '5', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL, 'N', 1),
-(2, 'LLAVE_HASH', 'VmFtb3NfcG9yX21hc19wdWxwaW4=', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL, 'N', 1);
+(1, 'TIME_OUT_SESSION', '15', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL, 'N', 1),
+(2, 'LLAVE_HASH', 'VmFtb3NfcG9yX21hc19wdWxwaW4=', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL, 'N', 1),
+(3, 'SISTEMA_INVENTARIO', '9', 'S', 'acnunez', '2018-06-05 00:00:00', NULL, NULL, 'N', 1),
+(4, 'SISTEMA_USUARIO', '4', 'S', 'acnunez', '2018-06-05 00:00:00', NULL, NULL, 'N', 1),
+(5, 'SISTEMA_SISTEMA', '1', 'S', 'acnunez', '2018-06-05 00:00:00', NULL, NULL, 'N', 1),
+(6, 'SISTEMA_EMPRESA', '2', 'S', 'acnunez', '2018-06-05 00:00:00', NULL, NULL, 'N', 1),
+(7, 'SISTEMA_PERSONA', '3', 'S', 'acnunez', '2018-06-05 00:00:00', NULL, NULL, 'N', 1),
+(8, 'SISTEMA_ALMACEN', '5', 'S', 'acnunez', '2018-06-05 00:00:00', NULL, NULL, 'N', 1),
+(9, 'SISTEMA_AGENCIA', '6', 'S', 'acnunez', '2018-06-05 00:00:00', NULL, NULL, 'N', 1),
+(10, 'SISTEMA_CONFIGURACION', '7', 'S', 'acnunez', '2018-06-05 00:00:00', NULL, NULL, 'N', 1),
+(11, 'SISTEMA_ASISTENCIA', '8', 'S', 'acnunez', '2018-06-05 00:00:00', NULL, NULL, 'N', 1);
 
 -- --------------------------------------------------------
 
@@ -2445,7 +2545,14 @@ CREATE TABLE `persona` (
 --
 
 INSERT INTO `persona` (`codPersona`, `nombrePersona`, `apePat`, `apeMat`, `sexo`, `edad`, `numeroDocumento`, `razonSocial`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`, `codTipoDocumento`, `tipoPersona`, `codEmpresa`) VALUES
-(1, 'Alejandro Cesar', 'Nuñez', 'Yupanqui', 'M', 29, '44833065', 'Alejandro Cesar Nuñez Yupanqui', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL, 1, 'N', 1);
+(1, 'Alejandro Cesar', 'Nuñez', 'Yupanqui', 'M', 29, '44833065', 'Alejandro Cesar Nuñez Yupanqui', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL, 1, 'N', 1),
+(2, 'Mary Kerly', 'Angulo', 'Suarez', 'F', 30, '70017273', 'Mary Kerly Angulo Suarez', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL, 1, 'N', 1),
+(3, 'Nelson Steve', 'Rojas', 'Vilca', 'M', 28, '7777777', '', 'S', 'acnunez', '2018-05-24 00:00:00', NULL, NULL, 1, 'N', 1),
+(4, 'Rafahel', 'Quispe', 'Seminario', 'M', 29, '22225555', '', 'S', 'acnunez', '2018-05-31 00:00:00', NULL, NULL, 1, 'N', 2),
+(5, 'Alan Gabriel', 'Garcia', 'Taboada', 'M', 29, '88887777', '', 'S', 'acnunez', '2018-05-31 00:00:00', NULL, NULL, 1, 'N', 2),
+(6, 'kenyi', 'De La Cruz', 'Puquio', 'M', 25, '88888888', '', 'S', 'acnunez', '2018-06-01 00:00:00', NULL, NULL, 1, 'N', 1),
+(7, 'Manuel', 'Blas', 'Velarde', 'M', 35, '77777777', '', 'S', 'acnunez', '2018-06-01 00:00:00', NULL, NULL, 1, 'N', 1),
+(8, 'Andres', 'Caceres', 'Rivera', 'M', 55, '66666666', '', 'S', 'acnunez', '2018-06-02 00:00:00', NULL, NULL, 1, 'N', 3);
 
 -- --------------------------------------------------------
 
@@ -2464,6 +2571,18 @@ CREATE TABLE `precio` (
   `usuarioModificacion` varchar(30) DEFAULT NULL,
   `fechaModificacion` datetime DEFAULT NULL,
   `codAgencia` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `privilegios`
+--
+
+CREATE TABLE `privilegios` (
+  `codPersona` int(11) NOT NULL,
+  `codCargo` int(11) DEFAULT NULL,
+  `codAgencia` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -2543,8 +2662,20 @@ CREATE TABLE `producto_unidad` (
 
 CREATE TABLE `proveedor` (
   `codPersona` int(11) NOT NULL,
-  `codEmpresa` int(11) NOT NULL
+  `codEmpresa` int(11) NOT NULL,
+  `estadoRegistro` varchar(1) NOT NULL,
+  `fechaInsercion` datetime NOT NULL,
+  `usuarioInsercion` varchar(30) NOT NULL,
+  `fechaModificacion` datetime DEFAULT NULL,
+  `usuarioModificacion` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `proveedor`
+--
+
+INSERT INTO `proveedor` (`codPersona`, `codEmpresa`, `estadoRegistro`, `fechaInsercion`, `usuarioInsercion`, `fechaModificacion`, `usuarioModificacion`) VALUES
+(3, 1, 'N', '2018-05-24 00:00:00', 'acnunez', '0000-00-00 00:00:00', '2018-05-24');
 
 -- --------------------------------------------------------
 
@@ -2838,10 +2969,15 @@ CREATE TABLE `sistema` (
 --
 
 INSERT INTO `sistema` (`codSistema`, `etiquetaSistema`, `urlIcono`, `indicadorAdministrador`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`, `url`) VALUES
-(1, 'Sistema', 'glyphicon glyphicon-menu-hamburger', 'S', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL, 'sistema/index'),
-(2, 'Empresa', 'glyphicon glyphicon-briefcase', 'S', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL, 'empresa/index'),
-(3, 'Persona', 'glyphicon glyphicon-user', 'N', 'S', 'acnunez', '2018-01-25 00:00:00', 'acnunez', '2018-01-25 00:00:00', 'persona/index'),
-(4, 'Usuarios', 'glyphicon glyphicon-sunglasses', 'N', 'S', 'acnunez', '2018-01-25 00:00:00', 'acnunez', '2018-01-25 00:00:00', 'usuario/index');
+(1, 'Sistema', 'glyphicon glyphicon-menu-hamburger', 'S', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL, 'sistema/index'),
+(2, 'Empresa', 'glyphicon glyphicon-briefcase', 'S', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL, 'empresa/index'),
+(3, 'Persona', 'glyphicon glyphicon-user', 'S', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL, 'persona/index'),
+(4, 'Usuarios', 'glyphicon glyphicon-sunglasses', 'S', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL, 'usuario/index'),
+(5, 'Almacen', 'glyphicon glyphicon-tasks', 'N', 'S', 'acnunez', '2018-05-12 00:00:00', 'acnunez', '2018-05-12 00:00:00', 'almacen/index'),
+(6, 'Agencias', 'glyphicon glyphicon-tags', 'S', 'S', 'acnunez', '2018-05-12 00:00:00', NULL, NULL, 'agencia/index'),
+(7, 'Configuracion', 'glyphicon glyphicon-flash', 'S', 'S', 'acnunez', '2018-05-12 00:00:00', NULL, NULL, 'parametros_generales/index'),
+(8, 'Asistencia', '', 'N', 'S', 'acnunez', '2018-06-02 00:00:00', NULL, NULL, 'Asistencia/index'),
+(9, 'Inventario', 'glyphicon glyphicon-gift', 'N', 'S', 'acnunez', '2018-06-04 00:00:00', NULL, NULL, 'inventory/index');
 
 -- --------------------------------------------------------
 
@@ -2900,36 +3036,12 @@ CREATE TABLE `tipo_documento` (
 --
 
 INSERT INTO `tipo_documento` (`codTipoDocumento`, `descripcion`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`) VALUES
-(1, 'LIBRETA ELECTORAL O DNI', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(2, 'CARNET DE EXTRANJERIA', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(3, 'REG. UNICO DE CONTRIBUYENTES', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(4, 'PASAPORTE', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(5, 'PART. DE NACIMIENTO-IDENTIDAD', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL),
-(6, 'OTROS', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tipo_empleado`
---
-
-CREATE TABLE `tipo_empleado` (
-  `codTipoEmpleado` int(11) NOT NULL,
-  `descripcion` varchar(100) NOT NULL,
-  `estadoRegistro` varchar(1) NOT NULL,
-  `usuarioInsercion` varchar(30) NOT NULL,
-  `fechaInsercion` datetime NOT NULL,
-  `usuarioModificacion` varchar(30) DEFAULT NULL,
-  `fechaModificacion` datetime DEFAULT NULL,
-  `codEmpresa` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `tipo_empleado`
---
-
-INSERT INTO `tipo_empleado` (`codTipoEmpleado`, `descripcion`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`, `codEmpresa`) VALUES
-(1, 'Administrador Produccion', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL, 1);
+(1, 'LIBRETA ELECTORAL O DNI', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(2, 'CARNET DE EXTRANJERIA', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(3, 'REG. UNICO DE CONTRIBUYENTES', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(4, 'PASAPORTE', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(5, 'PART. DE NACIMIENTO-IDENTIDAD', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL),
+(6, 'OTROS', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -3008,7 +3120,12 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`codUsuario`, `nombreUsuario`, `passwordUsuario`, `cantidadIntentos`, `indicadorUsuarioAdministrador`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`, `codPersona`, `codEmpresa`, `codAgencia`) VALUES
-(1, 'acnunez', '$2y$12$Vm1GdGIzTmZjRzl5WDIxa.2gQYe0cMPidgMxR7sEAYU17oD2RZHte', 0, 'Z', 'S', 'acnunez', '2018-01-25 00:00:00', NULL, NULL, 1, 1, 1);
+(1, 'acnunez', '$2y$12$Vm1GdGIzTmZjRzl5WDIxa.2gQYe0cMPidgMxR7sEAYU17oD2RZHte', 0, 'Z', 'S', 'acnunez', '2018-05-06 00:00:00', NULL, NULL, 1, 1, 1),
+(2, 'mangulo', '$2y$12$Vm1GdGIzTmZjRzl5WDIxa.2gQYe0cMPidgMxR7sEAYU17oD2RZHte', 0, 'S', 'S', 'acnunez', '2018-05-24 00:00:00', NULL, NULL, 2, 1, 1),
+(4, 'nrojas', '$2y$12$Vm1GdGIzTmZjRzl5WDIxa.kgbe89jMOmXF495kNziEv/KPCcMVT8a', 0, 'N', 'S', 'acnunez', '2018-05-24 00:00:00', NULL, NULL, 3, 1, 2),
+(5, 'rquispe', '$2y$12$Vm1GdGIzTmZjRzl5WDIxa.kgbe89jMOmXF495kNziEv/KPCcMVT8a', 0, 'S', 'S', 'acnunez', '2018-05-31 00:00:00', NULL, NULL, 4, 2, 3),
+(6, 'kdelacruz', '$2y$12$Vm1GdGIzTmZjRzl5WDIxa.kgbe89jMOmXF495kNziEv/KPCcMVT8a', 0, 'N', 'S', 'acnunez', '2018-06-01 00:00:00', NULL, NULL, 6, 1, 2),
+(7, 'acaceres', '$2y$12$Vm1GdGIzTmZjRzl5WDIxa.rYiT1/kNeNq.WcPb0XT6S.7iNQhaR66', 0, 'S', 'S', 'acnunez', '2018-06-02 00:00:00', NULL, NULL, 8, 3, 4);
 
 -- --------------------------------------------------------
 
@@ -3023,10 +3140,8 @@ CREATE TABLE `venta` (
   `igv` decimal(13,3) NOT NULL,
   `fechaProceso` datetime NOT NULL,
   `codTipoPago` int(11) NOT NULL,
-  `codPersona` int(11) NOT NULL,
-  `codComprobante` int(11) NOT NULL,
-  `numeroComprobante` varchar(30) NOT NULL,
-  `numeroSerie` varchar(30) DEFAULT NULL,
+  `codCliente` int(11) NOT NULL,
+  `codEmpleado` int(11) NOT NULL,
   `estadoRegistro` varchar(1) NOT NULL,
   `usuarioInsercion` varchar(30) NOT NULL,
   `fechaInsercion` datetime NOT NULL,
@@ -3072,6 +3187,12 @@ ALTER TABLE `almacen`
   ADD PRIMARY KEY (`codAlmacen`);
 
 --
+-- Indices de la tabla `cargo_empleado`
+--
+ALTER TABLE `cargo_empleado`
+  ADD PRIMARY KEY (`codCargo`);
+
+--
 -- Indices de la tabla `categoria`
 --
 ALTER TABLE `categoria`
@@ -3100,7 +3221,8 @@ ALTER TABLE `comprobante`
 -- Indices de la tabla `correlativo_comprobante`
 --
 ALTER TABLE `correlativo_comprobante`
-  ADD PRIMARY KEY (`codVenta`),
+  ADD PRIMARY KEY (`codCorrelativo`),
+  ADD KEY `R_69` (`codVenta`),
   ADD KEY `R_70` (`codComprobante`);
 
 --
@@ -3142,8 +3264,7 @@ ALTER TABLE `distrito`
 -- Indices de la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  ADD PRIMARY KEY (`codPersona`),
-  ADD KEY `R_18` (`codTipoEmpleado`);
+  ADD PRIMARY KEY (`codPersona`);
 
 --
 -- Indices de la tabla `empresa`
@@ -3257,6 +3378,12 @@ ALTER TABLE `precio`
   ADD PRIMARY KEY (`codPrecio`);
 
 --
+-- Indices de la tabla `privilegios`
+--
+ALTER TABLE `privilegios`
+  ADD PRIMARY KEY (`codPersona`);
+
+--
 -- Indices de la tabla `producto`
 --
 ALTER TABLE `producto`
@@ -3348,12 +3475,6 @@ ALTER TABLE `tipo_documento`
   ADD PRIMARY KEY (`codTipoDocumento`);
 
 --
--- Indices de la tabla `tipo_empleado`
---
-ALTER TABLE `tipo_empleado`
-  ADD PRIMARY KEY (`codTipoEmpleado`);
-
---
 -- Indices de la tabla `tipo_pago`
 --
 ALTER TABLE `tipo_pago`
@@ -3389,8 +3510,7 @@ ALTER TABLE `usuario`
 ALTER TABLE `venta`
   ADD PRIMARY KEY (`codVenta`),
   ADD KEY `R_19` (`codTipoPago`),
-  ADD KEY `R_21` (`codPersona`),
-  ADD KEY `R_22` (`codComprobante`);
+  ADD KEY `R_21` (`codCliente`);
 
 --
 -- Indices de la tabla `zona`
@@ -3406,12 +3526,17 @@ ALTER TABLE `zona`
 -- AUTO_INCREMENT de la tabla `agencia`
 --
 ALTER TABLE `agencia`
-  MODIFY `codAgencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `codAgencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `almacen`
 --
 ALTER TABLE `almacen`
   MODIFY `codAlmacen` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `cargo_empleado`
+--
+ALTER TABLE `cargo_empleado`
+  MODIFY `codCargo` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `categoria`
 --
@@ -3456,7 +3581,7 @@ ALTER TABLE `distrito`
 -- AUTO_INCREMENT de la tabla `empresa`
 --
 ALTER TABLE `empresa`
-  MODIFY `codEmpresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `codEmpresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `errores_sistema`
 --
@@ -3501,7 +3626,7 @@ ALTER TABLE `operador`
 -- AUTO_INCREMENT de la tabla `parametros_generales`
 --
 ALTER TABLE `parametros_generales`
-  MODIFY `codParametro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `codParametro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT de la tabla `permisos`
 --
@@ -3511,7 +3636,7 @@ ALTER TABLE `permisos`
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `codPersona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `codPersona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT de la tabla `precio`
 --
@@ -3551,7 +3676,7 @@ ALTER TABLE `sector`
 -- AUTO_INCREMENT de la tabla `sistema`
 --
 ALTER TABLE `sistema`
-  MODIFY `codSistema` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `codSistema` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT de la tabla `telefono`
 --
@@ -3567,11 +3692,6 @@ ALTER TABLE `tipo_asistencia`
 --
 ALTER TABLE `tipo_documento`
   MODIFY `codTipoDocumento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT de la tabla `tipo_empleado`
---
-ALTER TABLE `tipo_empleado`
-  MODIFY `codTipoEmpleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `tipo_pago`
 --
@@ -3591,7 +3711,7 @@ ALTER TABLE `unidad_medida`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `codUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `codUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `venta`
 --
@@ -3660,8 +3780,7 @@ ALTER TABLE `distrito`
 -- Filtros para la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  ADD CONSTRAINT `R_16` FOREIGN KEY (`codPersona`) REFERENCES `persona` (`codPersona`),
-  ADD CONSTRAINT `R_18` FOREIGN KEY (`codTipoEmpleado`) REFERENCES `tipo_empleado` (`codTipoEmpleado`);
+  ADD CONSTRAINT `R_16` FOREIGN KEY (`codPersona`) REFERENCES `persona` (`codPersona`);
 
 --
 -- Filtros para la tabla `empresa_sistema`
@@ -3798,9 +3917,8 @@ ALTER TABLE `usuario`
 --
 ALTER TABLE `venta`
   ADD CONSTRAINT `R_19` FOREIGN KEY (`codTipoPago`) REFERENCES `tipo_pago` (`codTipoPago`),
-  ADD CONSTRAINT `R_20` FOREIGN KEY (`codPersona`) REFERENCES `cliente` (`codPersona`),
-  ADD CONSTRAINT `R_21` FOREIGN KEY (`codPersona`) REFERENCES `empleado` (`codPersona`),
-  ADD CONSTRAINT `R_22` FOREIGN KEY (`codComprobante`) REFERENCES `comprobante` (`codComprobante`);
+  ADD CONSTRAINT `R_20` FOREIGN KEY (`codCliente`) REFERENCES `cliente` (`codPersona`),
+  ADD CONSTRAINT `R_21` FOREIGN KEY (`codCliente`) REFERENCES `empleado` (`codPersona`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
