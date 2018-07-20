@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-06-2018 a las 02:14:03
+-- Tiempo de generación: 21-07-2018 a las 01:30:12
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.23
 
@@ -100,6 +100,13 @@ CREATE TABLE `categoria` (
   `codEmpresa` int(11) NOT NULL,
   `codAgencia` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `categoria`
+--
+
+INSERT INTO `categoria` (`codCategoria`, `descripcion`, `estadoRegistro`, `usuarioInsercion`, `fechaInsercion`, `usuarioModificacion`, `fechaModificacion`, `indicadorExclusivo`, `codEmpresa`, `codAgencia`) VALUES
+(1, 'Perecible', 'S', 'acnunez', '2018-07-11 00:00:00', NULL, NULL, 'S', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -2518,6 +2525,35 @@ CREATE TABLE `permisos` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `permiso_submenu`
+--
+
+CREATE TABLE `permiso_submenu` (
+  `codPermiso` int(11) NOT NULL,
+  `codSubMenu` int(11) NOT NULL,
+  `codUsuario` int(11) NOT NULL,
+  `codEmpresa` int(11) NOT NULL,
+  `estadoRegistro` varchar(1) NOT NULL,
+  `fechaInsercion` date NOT NULL,
+  `usuarioInsercion` varchar(30) NOT NULL,
+  `fechaModificacion` date DEFAULT NULL,
+  `usuarioModificacion` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `permiso_submenu`
+--
+
+INSERT INTO `permiso_submenu` (`codPermiso`, `codSubMenu`, `codUsuario`, `codEmpresa`, `estadoRegistro`, `fechaInsercion`, `usuarioInsercion`, `fechaModificacion`, `usuarioModificacion`) VALUES
+(1, 4, 1, 1, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(2, 5, 1, 1, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(3, 21, 1, 1, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(4, 22, 1, 1, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(5, 1, 1, 1, 'S', '2018-07-18', 'acnunez', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `persona`
 --
 
@@ -2982,6 +3018,56 @@ INSERT INTO `sistema` (`codSistema`, `etiquetaSistema`, `urlIcono`, `indicadorAd
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `submenu`
+--
+
+CREATE TABLE `submenu` (
+  `codSubMenu` int(11) NOT NULL,
+  `descripcion` varchar(250) NOT NULL,
+  `urlSubmenu` varchar(350) DEFAULT NULL,
+  `codSistema` int(11) NOT NULL,
+  `indicadorSeparador` varchar(1) NOT NULL,
+  `indicadorAdministrador` varchar(1) NOT NULL,
+  `indicadorMenuPrincipal` varchar(1) NOT NULL,
+  `ordenMenu` int(11) NOT NULL,
+  `codMenuPadre` int(11) DEFAULT NULL,
+  `estadoRegistro` varchar(1) NOT NULL,
+  `fechaInsercion` date NOT NULL,
+  `usuarioInsercion` varchar(30) NOT NULL,
+  `fechaModificacion` date DEFAULT NULL,
+  `usuarioModificacion` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `submenu`
+--
+
+INSERT INTO `submenu` (`codSubMenu`, `descripcion`, `urlSubmenu`, `codSistema`, `indicadorSeparador`, `indicadorAdministrador`, `indicadorMenuPrincipal`, `ordenMenu`, `codMenuPadre`, `estadoRegistro`, `fechaInsercion`, `usuarioInsercion`, `fechaModificacion`, `usuarioModificacion`) VALUES
+(1, 'Ingreso de Productos', '../../producto/index', 9, 'N', 'N', 'N', 1, 5, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(2, 'Salida de Productos', '#', 9, 'N', 'N', 'N', 2, 5, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(3, '<li role="separator" class="divider"></li>', '#', 9, 'S', 'N', 'N', 3, 5, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(4, 'Configuración de Accesos', '../../producto/index', 9, 'N', 'S', 'N', 4, 5, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(5, 'Gestión', '#', 9, 'N', 'S', 'S', 1, 5, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(6, 'Administración de Productos', '#', 9, 'N', 'N', 'S', 2, 6, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(7, ' Productos', '../../producto/index', 9, 'N', 'N', 'N', 5, 6, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(8, 'Categorias', '../../categoria/index', 9, 'N', 'N', 'N', 6, 6, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(9, 'Modelos', '../../modelo/index', 9, 'N', 'N', 'N', 7, 6, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(10, 'Marcas', '../../marca/index', 8, 'N', 'N', 'N', 8, 6, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(11, ' Unidades de Medida', '../../unidad_medida/index', 9, 'N', 'N', 'N', 9, 6, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(12, 'Administración de Almacenes ', '#', 9, 'N', 'N', 'S', 3, 12, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(13, 'Almacenes', '#', 9, 'N', 'N', 'N', 10, 12, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(14, 'Sectores', '#', 8, 'N', 'N', 'N', 11, 12, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(15, 'Zonas', '#', 9, 'N', 'N', 'N', 12, 12, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(16, 'Secciones', '#', 9, 'N', 'N', 'N', 13, 12, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(17, 'Ubicación', '#', 9, 'N', 'N', 'N', 14, 12, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(18, 'Reportes', '#', 9, 'N', 'N', 'S', 4, 18, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(19, 'Generador de Reportes', '#', 9, 'N', 'N', 'N', 15, 18, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(21, ' Volver al Menú', '../../menu', 9, 'N', 'S', 'S', 5, 21, 'S', '2018-07-11', 'acnunez', NULL, NULL),
+(22, ' Cerrar Sesión', '../../index/logout', 9, 'N', 'S', 'S', 6, 22, 'S', '2018-07-11', 'acnunez', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `telefono`
 --
 
@@ -3365,6 +3451,12 @@ ALTER TABLE `permisos`
   ADD KEY `R_64` (`codPersona`);
 
 --
+-- Indices de la tabla `permiso_submenu`
+--
+ALTER TABLE `permiso_submenu`
+  ADD PRIMARY KEY (`codPermiso`);
+
+--
 -- Indices de la tabla `persona`
 --
 ALTER TABLE `persona`
@@ -3455,6 +3547,12 @@ ALTER TABLE `sistema`
   ADD PRIMARY KEY (`codSistema`);
 
 --
+-- Indices de la tabla `submenu`
+--
+ALTER TABLE `submenu`
+  ADD PRIMARY KEY (`codSubMenu`);
+
+--
 -- Indices de la tabla `telefono`
 --
 ALTER TABLE `telefono`
@@ -3541,7 +3639,7 @@ ALTER TABLE `cargo_empleado`
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `codCategoria` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `compra`
 --
@@ -3633,6 +3731,11 @@ ALTER TABLE `parametros_generales`
 ALTER TABLE `permisos`
   MODIFY `codPermiso` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT de la tabla `permiso_submenu`
+--
+ALTER TABLE `permiso_submenu`
+  MODIFY `codPermiso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
@@ -3677,6 +3780,11 @@ ALTER TABLE `sector`
 --
 ALTER TABLE `sistema`
   MODIFY `codSistema` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT de la tabla `submenu`
+--
+ALTER TABLE `submenu`
+  MODIFY `codSubMenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT de la tabla `telefono`
 --
